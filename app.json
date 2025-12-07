@@ -2,7 +2,7 @@
   "expo": {
     "name": "BeanDal",
     "slug": "BeanDal",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "scheme": "beandal",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -13,10 +13,18 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "updates": {
+      "url": "https://u.expo.dev/97d727d3-b09d-4c3d-bd47-cb07d327ad52"
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "ios": {
+      "bundleIdentifier": "com.tomatterton.beandal",
       "supportsTablet": true
     },
     "android": {
+      "package": "com.tomatterton.beandal",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -31,7 +39,7 @@
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/splash-icon.png",
+          "image": "./assets/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
@@ -44,6 +52,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "97d727d3-b09d-4c3d-bd47-cb07d327ad52"
+      }
     }
   }
 }
