@@ -54,6 +54,11 @@ export const typography = {
       lineHeight: lineHeight.lg,
       fontFamily: family.semibold,
     },
+    h4: {
+      fontSize: size.md,
+      lineHeight: lineHeight.md,
+      fontFamily: family.semibold,
+    },
     subtitle: {
       fontSize: size.md,
       lineHeight: lineHeight.lg,

@@ -6,12 +6,12 @@
     "scheme": "beandal",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "userInterfaceStyle": "automatic",
+    "userInterfaceStyle": "dark",
     "newArchEnabled": true,
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#120F0B"
     },
     "updates": {
       "url": "https://u.expo.dev/97d727d3-b09d-4c3d-bd47-cb07d327ad52"
@@ -42,12 +42,20 @@
           "image": "./assets/splash-icon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
+          "backgroundColor": "#120F0B",
           "dark": {
-            "backgroundColor": "#000000"
+            "backgroundColor": "#120F0B"
           }
         }
-      ]
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow BeanDal to access your photos so you can attach bean images.",
+          "cameraPermission": "Allow BeanDal to use your camera to take bean photos."
+        }
+      ],
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true,

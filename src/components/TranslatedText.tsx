@@ -23,9 +23,10 @@ type TranslationInput =
       values?: TOptions;
     };
 
-type Props = Omit<TextProps, 'children'> & {
-  translation: TranslationInput;
+type Props = TextProps & {
+  translation?: TranslationInput;
   variant?: Variant;
+  children?: React.ReactNode;
 };
 
 const normalize = (input: TranslationInput): { key: TranslationKey; values?: TOptions } => {
@@ -35,14 +36,32 @@ const normalize = (input: TranslationInput): { key: TranslationKey; values?: TOp
   return { key: input.key, values: input.values };
 };
 
-export const TranslatedText = ({ translation, variant = 'body', style, ...rest }: Props) => {
+export const TranslatedText = ({
+  translation,
+  variant = 'body',
+  style,
+  children,
+  ...rest
+}: Props) => {
   const { t } = useTranslation();
   const variantStyle = theme.typography.variants[variant];
-  const { key, values } = normalize(translation);
+
+  const translated = translation
+    ? (() => {
+        const { key, values } = normalize(translation);
+        return t(key, values);
+      })()
+    : undefined;
+
+  const content = children ?? translated;
+
+  if (content === undefined || content === null) {
+    return null;
+  }
 
   return (
     <Text style={[{ color: theme.colors.textPrimary }, variantStyle, style]} {...rest}>
-      {t(key, values)}
+      {content}
     </Text>
   );
 };

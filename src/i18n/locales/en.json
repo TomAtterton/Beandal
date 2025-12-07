@@ -6,6 +6,36 @@
     "welcome": "Welcome back, {{name}}!",
     "emptyTitle": "Welcome to BeanDal",
     "emptyBody": "You haven't added anything yet. Create your first entry to get started.",
-    "emptyAction": "Add"
+    "emptyAction": "Add",
+    "noRecipe": "Recipe not added yet",
+    "errorTitle": "Woops, something went wrong."
+  },
+  "addBeanRecipe": {
+    "title": "Add Bean & Recipe",
+    "editTitle": "Edit Bean & Recipe",
+    "save": "Save",
+    "update": "Update",
+    "saving": "Saving...",
+    "updating": "Updating...",
+    "delete": "Delete"
+  },
+  "form": {
+    "beanName": "Bean name",
+    "beanNamePlaceholder": "e.g. Ethiopia Guji",
+    "roaster": "Roaster",
+    "roasterPlaceholder": "e.g. Manhattan Coffee Roasters",
+    "grindSetting": "Grind setting",
+    "dose": "Dose (g)",
+    "yield": "Yield (g)",
+    "temperature": "Temperature (°C)",
+    "beanImage": "Bean image",
+    "beanImagePlaceholder": "Add a photo to replace the empty state.",
+    "addImage": "Add image",
+    "replaceImage": "Replace image",
+    "removeImage": "Remove image",
+    "imagePickerPermissionTitle": "Permission needed",
+    "imagePickerPermissionMessage": "Please allow photo access so you can attach a bean image.",
+    "imagePickerErrorTitle": "Unable to pick image",
+    "imagePickerErrorMessage": "Something went wrong while selecting an image."
   }
 }

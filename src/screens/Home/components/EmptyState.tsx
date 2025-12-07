@@ -5,12 +5,10 @@ import { AppImage } from '@/components/AppImage';
 import { TranslatedText } from '@/components/TranslatedText';
 import { theme } from '@theme';
 
-const emptyImage = require('../../../../assets/images/empty_state.png');
-
 export const EmptyState = () => {
   return (
     <View style={styles.container}>
-      <AppImage source={emptyImage} style={styles.image} />
+      <AppImage source={theme.images.emptyState} style={styles.image} />
       <TranslatedText translation="home.emptyTitle" variant="h2" style={styles.title} />
       <TranslatedText translation="home.emptyBody" style={styles.body} />
     </View>
@@ -19,6 +17,8 @@ export const EmptyState = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    justifyContent: 'center',
     alignItems: 'center',
     gap: theme.metrics.spacing.md,
   },
