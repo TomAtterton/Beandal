@@ -3,6 +3,9 @@
     "title": "BeanDal",
     "subtitle": "Shared theme tokens are ready to use.",
     "helper": "Colors, typography, spacing, and radii live in the shared theme.",
-    "welcome": "Welcome back, {{name}}!"
+    "welcome": "Welcome back, {{name}}!",
+    "emptyTitle": "Welcome to BeanDal",
+    "emptyBody": "You haven't added anything yet. Create your first entry to get started.",
+    "emptyAction": "Add"
   }
 }

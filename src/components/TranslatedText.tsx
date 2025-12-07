@@ -1,16 +1,26 @@
 import React from 'react';
 import { Text, TextProps } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { TOptions } from 'i18next';
 
+import type en from '@i18n/locales/en.json';
 import { theme } from '@theme';
 
 type Variant = keyof typeof theme.typography.variants;
 
+type NestedKeyOf<ObjectType extends object> = {
+  [Key in keyof ObjectType & (string | number)]: ObjectType[Key] extends object
+    ? `${Key}.${NestedKeyOf<ObjectType[Key]>}`
+    : `${Key}`;
+}[keyof ObjectType & (string | number)];
+
+type TranslationKey = NestedKeyOf<typeof en>;
+
 type TranslationInput =
-  | string
+  | TranslationKey
   | {
-      key: string;
-      values?: Record<string, unknown>;
+      key: TranslationKey;
+      values?: TOptions;
     };
 
 type Props = Omit<TextProps, 'children'> & {
@@ -18,7 +28,7 @@ type Props = Omit<TextProps, 'children'> & {
   variant?: Variant;
 };
 
-const normalize = (input: TranslationInput) => {
+const normalize = (input: TranslationInput): { key: TranslationKey; values?: TOptions } => {
   if (typeof input === 'string') {
     return { key: input, values: undefined };
   }

@@ -53,6 +53,7 @@ export const colors = {
   textMuted: palette.text.tertiary,
   accent: palette.accent,
   accentMuted: palette.accentMuted,
+  accentOn: palette.text.secondary,
   bean: palette.bean,
   success: palette.status.success,
   successMuted: palette.status.successMuted,

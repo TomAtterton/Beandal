@@ -16,11 +16,14 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@expo/vector-icons": "^15.0.3",
     "expo": "~54.0.27",
     "expo-constants": "~18.0.11",
     "expo-dev-client": "~6.0.20",
-    "expo-localization": "~15.0.3",
+    "expo-glass-effect": "~0.1.8",
+    "expo-image": "~3.0.11",
     "expo-linking": "~8.0.10",
+    "expo-localization": "~15.0.3",
     "expo-router": "~6.0.17",
     "expo-splash-screen": "~31.0.12",
     "expo-status-bar": "~3.0.9",

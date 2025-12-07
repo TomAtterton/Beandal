@@ -1,18 +1,24 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, View } from 'react-native';
 
+import { EmptyState } from '@/screens/Home/components/EmptyState';
 import { theme } from '@theme';
-import { TranslatedText } from '@/components/TranslatedText';
+import { FAB } from '@/components/buttons/FAB';
 
 export default function Home() {
+  const handleAdd = () => {
+    // TODO: navigate to create flow
+  };
+
   return (
     <View style={styles.container}>
-      <TranslatedText translation="home.title" variant="h1" style={styles.title} />
-      <TranslatedText
-        translation={{ key: 'home.welcome', values: { name: 'Tom' } }}
-        style={styles.helper}
-      />
-      <StatusBar style="auto" />
+      <View style={styles.content}>
+        <EmptyState />
+      </View>
+
+      <FAB accessibilityLabel="Add new item" onPress={handleAdd} style={styles.fab} />
+
+      <StatusBar style="light" />
     </View>
   );
 }
@@ -20,19 +26,29 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: theme.colors.background,
     paddingHorizontal: theme.metrics.spacing.xl,
+    paddingVertical: theme.metrics.spacing.xl,
   },
   title: {
-    marginBottom: theme.metrics.spacing.sm,
+    color: theme.colors.textPrimary,
   },
   subtitle: {
-    color: theme.colors.textSecondary,
-  },
-  helper: {
     color: theme.colors.textMuted,
-    textAlign: 'center',
-    marginTop: theme.metrics.spacing.sm,
+    marginTop: theme.metrics.spacing.xs,
+  },
+  header: {
+    gap: theme.metrics.spacing.xs,
+    marginBottom: theme.metrics.spacing.xl,
+  },
+  content: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  fab: {
+    position: 'absolute',
+    bottom: theme.metrics.spacing.xl,
+    right: theme.metrics.spacing.xl,
   },
 });
