@@ -5,6 +5,8 @@
     "baseUrl": ".",
     "paths": {
       "@screens/*": ["./src/screens/*"],
+      "@theme/*": ["./src/theme/*"],
+      "@theme": ["./src/theme"],
       "@/*": ["./src/*"]
     }
   },
