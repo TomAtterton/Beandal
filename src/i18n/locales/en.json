@@ -1,0 +1,8 @@
+{
+  "home": {
+    "title": "BeanDal",
+    "subtitle": "Shared theme tokens are ready to use.",
+    "helper": "Colors, typography, spacing, and radii live in the shared theme.",
+    "welcome": "Welcome back, {{name}}!"
+  }
+}

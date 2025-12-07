@@ -2,6 +2,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import { ThemeProvider } from '@react-navigation/native';
 
+import '@i18n';
 import { theme } from '@theme';
 
 export default function RootLayout() {

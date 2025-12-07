@@ -1,12 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { theme } from '@theme';
+import { TranslatedText } from '@/components/TranslatedText';
 
 export default function Home() {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>BeanDal</Text>
+      <TranslatedText translation="home.title" variant="h1" style={styles.title} />
+      <TranslatedText
+        translation={{ key: 'home.welcome', values: { name: 'Tom' } }}
+        style={styles.helper}
+      />
       <StatusBar style="auto" />
     </View>
   );
@@ -20,8 +25,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.metrics.spacing.xl,
   },
   title: {
-    color: theme.colors.textPrimary,
-    ...theme.typography.variants.h1,
     marginBottom: theme.metrics.spacing.sm,
+  },
+  subtitle: {
+    color: theme.colors.textSecondary,
+  },
+  helper: {
+    color: theme.colors.textMuted,
+    textAlign: 'center',
+    marginTop: theme.metrics.spacing.sm,
   },
 });
