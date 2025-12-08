@@ -10,7 +10,10 @@ type FormTextInputProps<TFieldValues extends FieldValues> = {
   control: Control<TFieldValues>;
   labelTranslation?: React.ComponentProps<typeof TranslatedText>['translation'];
   children?: React.ReactNode;
-} & Pick<TextInputProps, 'placeholder' | 'keyboardType' | 'autoCapitalize'>;
+} & Pick<
+  TextInputProps,
+  'placeholder' | 'keyboardType' | 'autoCapitalize' | 'multiline' | 'numberOfLines'
+>;
 
 export const FormTextInput = <TFieldValues extends FieldValues>({
   name,
@@ -20,6 +23,8 @@ export const FormTextInput = <TFieldValues extends FieldValues>({
   placeholder,
   keyboardType,
   autoCapitalize = 'none',
+  multiline,
+  numberOfLines,
 }: FormTextInputProps<TFieldValues>) => (
   <Controller
     control={control}
@@ -43,6 +48,8 @@ export const FormTextInput = <TFieldValues extends FieldValues>({
             placeholder={placeholder}
             keyboardType={keyboardType}
             autoCapitalize={autoCapitalize}
+            multiline={multiline}
+            numberOfLines={numberOfLines}
             placeholderTextColor={theme.colors.textMuted}
             selectionColor={theme.colors.accent}
             style={[
@@ -63,10 +70,10 @@ export const FormTextInput = <TFieldValues extends FieldValues>({
 
 const styles = StyleSheet.create({
   field: {
-    marginBottom: theme.metrics.spacing.md,
+    marginBottom: theme.metrics.spacing.lg,
   },
   label: {
-    marginBottom: theme.metrics.spacing.xs,
+    marginBottom: theme.metrics.spacing.sm,
     fontStyle: 'italic',
   },
   input: {

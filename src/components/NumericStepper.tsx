@@ -80,10 +80,10 @@ export const NumericStepper = ({
 
 const styles = StyleSheet.create({
   field: {
-    marginBottom: theme.metrics.spacing.md,
+    marginBottom: theme.metrics.spacing.lg,
   },
   label: {
-    marginBottom: theme.metrics.spacing.xs,
+    marginBottom: theme.metrics.spacing.sm,
     fontStyle: 'italic',
   },
   container: {

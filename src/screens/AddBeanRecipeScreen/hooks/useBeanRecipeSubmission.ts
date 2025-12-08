@@ -3,20 +3,28 @@ import { UseFormReset } from 'react-hook-form';
 import * as crypto from 'expo-crypto';
 
 import { useAppStore } from '@/store/appStore';
-import { Bean, Recipe } from '@/validation/coffeeSchemas';
+import { Bean, Recipe, ShotResult } from '@/validation/coffeeSchemas';
 import { BeanRecipeFormInput, BeanRecipeFormValues } from '@/validation/beanRecipeSchema';
 
 type Params = {
   existingBean?: Bean;
   existingRecipe?: Recipe;
+  existingShotResult?: ShotResult;
   reset: UseFormReset<BeanRecipeFormInput>;
 };
 
-export const useBeanRecipeSubmission = ({ existingBean, existingRecipe, reset }: Params) => {
+export const useBeanRecipeSubmission = ({
+  existingBean,
+  existingRecipe,
+  existingShotResult,
+  reset,
+}: Params) => {
   const addBean = useAppStore((state) => state.addBean);
   const addRecipe = useAppStore((state) => state.addRecipe);
   const updateBean = useAppStore((state) => state.updateBean);
   const updateRecipe = useAppStore((state) => state.updateRecipe);
+  const addShotResult = useAppStore((state) => state.addShotResult);
+  const updateShotResult = useAppStore((state) => state.updateShotResult);
   const removeBean = useAppStore((state) => state.removeBean);
   const removeRecipe = useAppStore((state) => state.removeRecipe);
 
@@ -24,11 +32,13 @@ export const useBeanRecipeSubmission = ({ existingBean, existingRecipe, reset }:
     async (values: BeanRecipeFormValues) => {
       const beanId = existingBean?.id ?? crypto.randomUUID();
       const recipeId = existingRecipe?.id ?? crypto.randomUUID();
+      const shotResultId = existingShotResult?.id ?? crypto.randomUUID();
 
       if (existingBean) {
         updateBean(beanId, {
           name: values.beanName,
           roaster: values.roaster,
+          roastLevel: values.roastLevel,
           imageUri: values.imageUri,
         });
       } else {
@@ -36,6 +46,7 @@ export const useBeanRecipeSubmission = ({ existingBean, existingRecipe, reset }:
           id: beanId,
           name: values.beanName,
           roaster: values.roaster,
+          roastLevel: values.roastLevel,
           roastDate: undefined,
           imageUri: values.imageUri,
           notes: undefined,
@@ -61,11 +72,39 @@ export const useBeanRecipeSubmission = ({ existingBean, existingRecipe, reset }:
         });
       }
 
+      if (existingShotResult) {
+        updateShotResult(shotResultId, {
+          recipeId,
+          shotTime: values.shotTime,
+          tasteNotes: values.tasteNotes,
+          rating: values.rating,
+        });
+      } else {
+        addShotResult({
+          id: shotResultId,
+          recipeId,
+          shotTime: values.shotTime,
+          tasteNotes: values.tasteNotes,
+          rating: values.rating,
+        });
+      }
+
       reset(values);
 
       return { beanId, recipeId };
     },
-    [addBean, addRecipe, existingBean, existingRecipe, reset, updateBean, updateRecipe],
+    [
+      addBean,
+      addRecipe,
+      addShotResult,
+      existingBean,
+      existingRecipe,
+      existingShotResult,
+      reset,
+      updateBean,
+      updateRecipe,
+      updateShotResult,
+    ],
   );
 
   const onDelete = useCallback(() => {

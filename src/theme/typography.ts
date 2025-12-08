@@ -1,10 +1,8 @@
-const systemFont = 'System';
-
 const family = {
-  regular: systemFont,
-  medium: systemFont,
-  semibold: systemFont,
-  bold: systemFont,
+  regular: 'SpaceGrotesk_400Regular',
+  medium: 'SpaceGrotesk_500Medium',
+  semibold: 'SpaceGrotesk_600SemiBold',
+  bold: 'SpaceGrotesk_700Bold',
 };
 
 const size = {

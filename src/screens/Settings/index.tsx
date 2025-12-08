@@ -32,6 +32,9 @@ const SettingsScreen = () => {
           <Link href="/sync" asChild>
             <MenuItem translation="settings.sync" />
           </Link>
+          <Link href="/taste-notes" asChild>
+            <MenuItem translation="settings.manageTasteNotes" />
+          </Link>
         </View>
 
         <View style={styles.footer}>

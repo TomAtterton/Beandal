@@ -52,6 +52,7 @@ export const beanSchema = z.object({
   roastDate: z.string().optional(),
   imageUri: optionalImageUriField,
   notes: optionalNotesField,
+  roastLevel: z.enum(['light', 'medium', 'medium_dark', 'dark']).optional().default('medium'),
 });
 
 export const recipeSchema = z.object({
@@ -63,5 +64,18 @@ export const recipeSchema = z.object({
   temperature: boundedNumber('Temperature', { min: 80, max: 100 }),
 });
 
+export const shotResultSchema = z.object({
+  id: z.string(),
+  recipeId: z.string(),
+  shotTime: boundedNumber('Shot time', { min: 0, max: 120 }),
+  tasteNotes: z.array(z.string().min(1)).default([]),
+  rating: z
+    .number()
+    .int()
+    .min(1, 'Rating must be between 1 and 5')
+    .max(5, 'Rating must be between 1 and 5'),
+});
+
 export type Bean = z.infer<typeof beanSchema>;
 export type Recipe = z.infer<typeof recipeSchema>;
+export type ShotResult = z.infer<typeof shotResultSchema>;

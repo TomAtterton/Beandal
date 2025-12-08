@@ -5,6 +5,13 @@ const routerLayout = () => (
   <Stack
     screenOptions={{
       contentStyle: { backgroundColor: theme.colors.background },
+      headerTitleStyle: {
+        fontFamily: theme.typography.family.semibold,
+      },
+      headerBackTitleStyle: {
+        fontFamily: theme.typography.family.medium,
+      },
+      headerTintColor: theme.colors.textPrimary,
     }}
   >
     <Stack.Screen name="home" options={{ headerShown: false }} />
@@ -15,7 +22,7 @@ const routerLayout = () => (
           backgroundColor: theme.colors.background,
         },
 
-        title: 'Add Bean',
+        title: 'Add Brew',
         fullScreenGestureEnabled: true,
         headerBackButtonDisplayMode: 'minimal',
         headerBackButtonMenuEnabled: true,
@@ -27,6 +34,16 @@ const routerLayout = () => (
       name="settings"
       options={{
         title: 'Settings',
+        headerBackButtonDisplayMode: 'minimal',
+        headerShadowVisible: false,
+        headerTintColor: theme.colors.textPrimary,
+        headerStyle: { backgroundColor: theme.colors.background },
+      }}
+    />
+    <Stack.Screen
+      name="taste-notes"
+      options={{
+        title: 'Taste notes',
         headerBackButtonDisplayMode: 'minimal',
         headerShadowVisible: false,
         headerTintColor: theme.colors.textPrimary,

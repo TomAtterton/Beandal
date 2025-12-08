@@ -1,12 +1,27 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import { Redirect } from 'expo-router';
 import * as ExpoSplashscreen from 'expo-splash-screen';
+import { useFonts } from 'expo-font';
+import {
+  SpaceGrotesk_400Regular,
+  SpaceGrotesk_500Medium,
+  SpaceGrotesk_600SemiBold,
+  SpaceGrotesk_700Bold,
+} from '@expo-google-fonts/space-grotesk';
 import Splashscreen from '@/screens/Splashscreen';
 import useHydration from '@/hooks/useHydration';
+
+void ExpoSplashscreen.preventAutoHideAsync();
 
 const AppIndex = () => {
   const hasHydrated = useHydration();
   const [isReady, setIsReady] = useState(false);
+  const [fontsLoaded, fontError] = useFonts({
+    SpaceGrotesk_400Regular,
+    SpaceGrotesk_500Medium,
+    SpaceGrotesk_600SemiBold,
+    SpaceGrotesk_700Bold,
+  });
 
   const hideSplash = useCallback(async () => {
     await ExpoSplashscreen.hideAsync();
@@ -14,7 +29,7 @@ const AppIndex = () => {
 
   useEffect(() => {
     const onSetup = async () => {
-      if (hasHydrated) {
+      if (hasHydrated && (fontsLoaded || fontError)) {
         try {
           await hideSplash();
         } finally {
@@ -25,10 +40,12 @@ const AppIndex = () => {
       }
     };
     onSetup();
-  }, [hideSplash, hasHydrated]);
+  }, [fontError, fontsLoaded, hasHydrated, hideSplash]);
 
   // Show splash screen while hydrating or setting up
-  if (!hasHydrated || !isReady) {
+  const fontsReady = fontsLoaded || fontError;
+
+  if (!hasHydrated || !fontsReady || !isReady) {
     return <Splashscreen disableNavigation />;
   }
 

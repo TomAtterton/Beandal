@@ -4,7 +4,7 @@ import { FlashList, FlashListProps } from '@shopify/flash-list';
 
 import { EmptyState } from '@/screens/Home/components/EmptyState';
 import { theme } from '@theme';
-import { Bean, Recipe } from '@/validation/coffeeSchemas';
+import { Bean, Recipe, ShotResult } from '@/validation/coffeeSchemas';
 import { RecipeBeanListErrorState } from './RecipeBeanListErrorState';
 import { RecipeBeanListItem } from './RecipeBeanListItem';
 import { RecipeBeanListShimmer } from './RecipeBeanListShimmer';
@@ -12,11 +12,13 @@ import { RecipeBeanListShimmer } from './RecipeBeanListShimmer';
 type BeanWithRecipe = {
   bean: Bean;
   recipe?: Recipe;
+  shotResult?: ShotResult;
 };
 
 type Props = {
   beans: Bean[];
   recipes: Recipe[];
+  shotResults: ShotResult[];
   isLoading?: boolean;
   error?: string | null;
   onItemPress?: (beanId: string, recipeId?: string) => void;
@@ -26,18 +28,41 @@ type Props = {
 export const RecipeBeanList = ({
   beans,
   recipes,
+  shotResults,
   isLoading = false,
   error,
   onItemPress,
   contentContainerStyle,
 }: Props) => {
+  const estimatedItemHeight = 140;
+
+  const recipeByBeanId = useMemo(() => {
+    const map = new Map<string, Recipe>();
+    recipes.forEach((recipe) => {
+      map.set(recipe.beanId, recipe);
+    });
+    return map;
+  }, [recipes]);
+
+  const shotResultByRecipeId = useMemo(() => {
+    const map = new Map<string, ShotResult>();
+    shotResults.forEach((shotResult) => {
+      map.set(shotResult.recipeId, shotResult);
+    });
+    return map;
+  }, [shotResults]);
+
   const data = useMemo<BeanWithRecipe[]>(
     () =>
-      beans.map((bean) => ({
-        bean,
-        recipe: recipes.find((recipe) => recipe.beanId === bean.id),
-      })),
-    [beans, recipes],
+      beans.map((bean) => {
+        const recipe = recipeByBeanId.get(bean.id);
+        return {
+          bean,
+          recipe,
+          shotResult: recipe ? shotResultByRecipeId.get(recipe.id) : undefined,
+        };
+      }),
+    [beans, recipeByBeanId, shotResultByRecipeId],
   );
 
   if (isLoading) {
@@ -52,7 +77,12 @@ export const RecipeBeanList = ({
     <FlashList
       data={data}
       renderItem={({ item }) => (
-        <RecipeBeanListItem bean={item.bean} recipe={item.recipe} onPress={onItemPress} />
+        <RecipeBeanListItem
+          bean={item.bean}
+          recipe={item.recipe}
+          shotResult={item.shotResult}
+          onPress={onItemPress}
+        />
       )}
       contentInsetAdjustmentBehavior="automatic"
       keyExtractor={(item) => item.bean.id}
@@ -60,6 +90,9 @@ export const RecipeBeanList = ({
       contentContainerStyle={[{ paddingBottom: theme.metrics.spacing.xxl }, contentContainerStyle]}
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={<EmptyState />}
+      overrideItemLayout={(layout) => {
+        (layout as { size?: number }).size = estimatedItemHeight;
+      }}
     />
   );
 };

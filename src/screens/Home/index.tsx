@@ -16,6 +16,7 @@ const Home = () => {
   const hasHydrated = useHydration();
   const beans = useAppStore((state) => state.beans);
   const recipes = useAppStore((state) => state.recipes);
+  const shotResults = useAppStore((state) => state.shotResults);
 
   const isLoading = useMemo(() => !hasHydrated, [hasHydrated]);
 
@@ -45,6 +46,7 @@ const Home = () => {
       <RecipeBeanList
         beans={beans}
         recipes={recipes}
+        shotResults={shotResults}
         isLoading={isLoading}
         error={null}
         onItemPress={handleItemPress}

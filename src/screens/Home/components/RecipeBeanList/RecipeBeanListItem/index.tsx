@@ -6,17 +6,33 @@ import { Icon } from '@/components/Icon';
 import { TranslatedText } from '@/components/TranslatedText';
 import { BaseButton } from '@/components/buttons/BaseButton';
 import { theme } from '@theme';
-import { Bean, Recipe } from '@/validation/coffeeSchemas';
+import { Bean, Recipe, ShotResult } from '@/validation/coffeeSchemas';
 import { RecipeBeanMetricPill } from './RecipeBeanMetricPill';
 
 type Props = {
   bean: Bean;
   recipe?: Recipe;
+  shotResult?: ShotResult;
   onPress?: (beanId: string, recipeId?: string) => void;
 };
 
-export const RecipeBeanListItem = ({ bean, recipe, onPress }: Props) => {
+export const RecipeBeanListItem = ({ bean, recipe, shotResult, onPress }: Props) => {
   const handlePress = () => onPress?.(bean.id, recipe?.id);
+
+  const roastLabel = useMemo(() => {
+    switch (bean.roastLevel) {
+      case 'light':
+        return 'Light roast';
+      case 'medium':
+        return 'Medium roast';
+      case 'medium_dark':
+        return 'Medium-dark roast';
+      case 'dark':
+        return 'Dark roast';
+      default:
+        return undefined;
+    }
+  }, [bean.roastLevel]);
 
   const metricPills = useMemo(() => {
     if (!recipe) return null;
@@ -34,9 +50,19 @@ export const RecipeBeanListItem = ({ bean, recipe, onPress }: Props) => {
           label="Temp"
           value={`${recipe.temperature}°C`}
         />
+        {shotResult ? (
+          <>
+            <RecipeBeanMetricPill
+              icon="time-outline"
+              label="Shot"
+              value={`${shotResult.shotTime}s`}
+            />
+            <RecipeBeanMetricPill icon="star" label="Rating" value={`${shotResult.rating}/5`} />
+          </>
+        ) : null}
       </>
     );
-  }, [recipe]);
+  }, [recipe, shotResult]);
 
   return (
     <BaseButton style={styles.touchable} onPress={handlePress}>
@@ -68,10 +94,20 @@ export const RecipeBeanListItem = ({ bean, recipe, onPress }: Props) => {
               {`Roast date: ${bean.roastDate}`}
             </TranslatedText>
           ) : null}
+          {roastLabel ? (
+            <TranslatedText variant="caption" style={styles.meta}>
+              {roastLabel}
+            </TranslatedText>
+          ) : null}
 
           {bean.notes ? (
             <TranslatedText style={styles.notes} numberOfLines={2}>
               {bean.notes}
+            </TranslatedText>
+          ) : null}
+          {shotResult?.tasteNotes?.length ? (
+            <TranslatedText style={styles.tasteNotes} numberOfLines={2}>
+              {`Notes: ${shotResult.tasteNotes.join(', ')}`}
             </TranslatedText>
           ) : null}
 
@@ -145,6 +181,9 @@ const styles = StyleSheet.create({
   },
   notes: {
     color: theme.colors.textPrimary,
+  },
+  tasteNotes: {
+    color: theme.colors.textSecondary,
   },
   metricsRow: {
     flexDirection: 'row',

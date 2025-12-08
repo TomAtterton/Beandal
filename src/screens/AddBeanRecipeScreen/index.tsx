@@ -1,13 +1,17 @@
 import React, { useCallback, useState } from 'react';
-import { Alert, ScrollView, StyleSheet, View, ActivityIndicator } from 'react-native';
+import { Alert, StyleSheet, View, ActivityIndicator } from 'react-native';
 import { Stack, useLocalSearchParams, useRouter } from 'expo-router';
 import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-controller';
 
 import { FormTextInput } from '@/components/FormTextInput';
 import { ImagePicker } from '@/components/ImagePicker';
 import { NumericStepper } from '@/components/NumericStepper';
+import { Icon } from '@/components/Icon';
+import { RoastLevelPicker } from '@/components/RoastLevelPicker';
+import { TagMultiSelect } from '@/components/TagMultiSelect';
 import { TranslatedText } from '@/components/TranslatedText';
 import { IconButton, LabelButton } from '@/components/buttons';
 import { useAppStore } from '@/store/appStore';
@@ -27,6 +31,8 @@ export const AddBeanRecipeScreen = () => {
   const existingBean = useAppStore((state) =>
     beanIdParam ? state.beans.find((bean) => bean.id === beanIdParam) : undefined,
   );
+  const tasteNoteTags = useAppStore((state) => state.tasteNoteTags);
+  const addTasteNoteTag = useAppStore((state) => state.addTasteNoteTag);
   const existingRecipe = useAppStore((state) => {
     if (recipeIdParam) {
       return state.recipes.find((recipe) => recipe.id === recipeIdParam);
@@ -36,17 +42,23 @@ export const AddBeanRecipeScreen = () => {
     }
     return undefined;
   });
+  const existingShotResult = useAppStore((state) =>
+    existingRecipe
+      ? state.shotResults.find((shotResult) => shotResult.recipeId === existingRecipe.id)
+      : undefined,
+  );
 
   const {
     control,
     handleSubmit,
     reset,
     formState: { isSubmitting },
-  } = useBeanRecipeForm({ existingBean, existingRecipe });
+  } = useBeanRecipeForm({ existingBean, existingRecipe, existingShotResult });
 
   const { onSubmit, onDelete } = useBeanRecipeSubmission({
     existingBean,
     existingRecipe,
+    existingShotResult,
     reset,
   });
 
@@ -117,14 +129,22 @@ export const AddBeanRecipeScreen = () => {
   return (
     <>
       <Stack.Screen options={{ title: headerTitle, headerRight }} />
-      <ScrollView
+      <KeyboardAwareScrollView
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode="interactive"
         contentInsetAdjustmentBehavior="automatic"
+        bottomOffset={insets.bottom}
         contentContainerStyle={[
           styles.content,
           { paddingBottom: insets.bottom + theme.metrics.spacing.xl },
         ]}
-        keyboardShouldPersistTaps="handled"
+        style={{ flex: 1 }}
       >
+        <View style={styles.sectionRow}>
+          <Icon name="leaf-outline" color={theme.colors.textPrimary} size={20} />
+          <TranslatedText translation="form.beanSectionTitle" variant="h2" style={styles.section} />
+        </View>
+
         <FormTextInput<BeanRecipeFormInput>
           name="beanName"
           control={control}
@@ -142,6 +162,14 @@ export const AddBeanRecipeScreen = () => {
 
         <Controller
           control={control}
+          name="roastLevel"
+          render={({ field: { value, onChange } }) => (
+            <RoastLevelPicker value={value} onChange={onChange} />
+          )}
+        />
+
+        <Controller
+          control={control}
           name="imageUri"
           render={({ field: { value, onChange } }) => (
             <>
@@ -150,6 +178,15 @@ export const AddBeanRecipeScreen = () => {
             </>
           )}
         />
+
+        <View style={styles.sectionRow}>
+          <Icon name="flame-outline" color={theme.colors.textPrimary} size={20} />
+          <TranslatedText
+            translation="form.recipeSectionTitle"
+            variant="h2"
+            style={styles.section}
+          />
+        </View>
 
         <Controller
           control={control}
@@ -211,6 +248,60 @@ export const AddBeanRecipeScreen = () => {
           )}
         />
 
+        <View style={styles.sectionRow}>
+          <Icon name="aperture-outline" color={theme.colors.textPrimary} size={20} />
+          <TranslatedText translation="form.shotSectionTitle" variant="h2" style={styles.section} />
+        </View>
+
+        <Controller
+          control={control}
+          name="shotTime"
+          render={({ field: { value, onChange } }) => (
+            <NumericStepper
+              labelTranslation="form.shotTime"
+              value={value ?? 0}
+              onChange={(next) => onChange(next)}
+              min={0}
+              max={120}
+              step={0.5}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="tasteNotes"
+          render={({ field: { value, onChange } }) => {
+            return (
+              <TagMultiSelect
+                labelTranslation="form.tasteNotes"
+                options={tasteNoteTags}
+                value={value ?? []}
+                onChange={(next) => {
+                  next.forEach((tag) => addTasteNoteTag(tag));
+                  onChange(next);
+                }}
+                placeholder={t('form.tasteNotesPlaceholder')}
+              />
+            );
+          }}
+        />
+
+        <Controller
+          control={control}
+          name="rating"
+          render={({ field: { value, onChange } }) => (
+            <NumericStepper
+              labelTranslation="form.rating"
+              value={value ?? 0}
+              onChange={(next) => onChange(next)}
+              min={1}
+              max={5}
+              step={1}
+            />
+          )}
+        />
+
         <View style={styles.submitContainer}>
           <LabelButton
             translation={actionKey}
@@ -224,7 +315,7 @@ export const AddBeanRecipeScreen = () => {
             <ActivityIndicator color={theme.colors.accent} />
           </View>
         ) : null}
-      </ScrollView>
+      </KeyboardAwareScrollView>
     </>
   );
 };
@@ -234,13 +325,24 @@ export default AddBeanRecipeScreen;
 const styles = StyleSheet.create({
   content: {
     padding: theme.metrics.spacing.lg,
+    gap: theme.metrics.spacing.md,
+  },
+  sectionRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: theme.metrics.spacing.xs,
+    marginTop: theme.metrics.spacing.xl,
+    marginBottom: theme.metrics.spacing.sm,
+  },
+  section: {
+    color: theme.colors.textPrimary,
   },
   title: {
     fontSize: 20,
     marginBottom: theme.metrics.spacing.md,
   },
   label: {
-    marginBottom: theme.metrics.spacing.xs,
+    marginBottom: theme.metrics.spacing.sm,
     fontStyle: 'italic',
   },
   submitContainer: {
