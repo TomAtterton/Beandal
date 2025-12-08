@@ -2,7 +2,7 @@
   "expo": {
     "name": "BeanDal",
     "slug": "BeanDal",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "scheme": "beandal",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
