@@ -1,6 +1,6 @@
 import React, { useMemo } from 'react';
 import { View } from 'react-native';
-import { FlashList } from '@shopify/flash-list';
+import { FlashList, FlashListProps } from '@shopify/flash-list';
 
 import { EmptyState } from '@/screens/Home/components/EmptyState';
 import { theme } from '@theme';
@@ -20,6 +20,7 @@ type Props = {
   isLoading?: boolean;
   error?: string | null;
   onItemPress?: (beanId: string, recipeId?: string) => void;
+  contentContainerStyle?: FlashListProps<BeanWithRecipe>['contentContainerStyle'];
 };
 
 export const RecipeBeanList = ({
@@ -28,6 +29,7 @@ export const RecipeBeanList = ({
   isLoading = false,
   error,
   onItemPress,
+  contentContainerStyle,
 }: Props) => {
   const data = useMemo<BeanWithRecipe[]>(
     () =>
@@ -55,7 +57,7 @@ export const RecipeBeanList = ({
       contentInsetAdjustmentBehavior="automatic"
       keyExtractor={(item) => item.bean.id}
       ItemSeparatorComponent={() => <View style={{ height: theme.metrics.spacing.md }} />}
-      contentContainerStyle={{ paddingBottom: theme.metrics.spacing.xxl }}
+      contentContainerStyle={[{ paddingBottom: theme.metrics.spacing.xxl }, contentContainerStyle]}
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={<EmptyState />}
     />

@@ -1,4 +1,7 @@
 {
+  "common": {
+    "cancel": "Cancel"
+  },
   "home": {
     "title": "BeanDal",
     "subtitle": "Shared theme tokens are ready to use.",
@@ -10,9 +13,22 @@
     "noRecipe": "Recipe not added yet",
     "errorTitle": "Woops, something went wrong."
   },
+  "settings": {
+    "versionBuild": "Version {{version}} • Build {{build}}",
+    "sync": "Sync",
+    "syncDescription": "Keep your data up to date across devices.",
+    "icloudSync": "iCloud",
+    "icloudDescription": "Use iCloud (CKShare) to sync BeanDal data across your Apple devices.",
+    "icloudSyncLabel": "iCloud Sync",
+    "manageConnections": "Manage shared connections",
+    "manageConnectionsDescription": "See who has access, revoke sharing, and send new invitations.",
+    "manageConnectionsAction": "Manage sharing"
+  },
   "addBeanRecipe": {
     "title": "Add Bean & Recipe",
     "editTitle": "Edit Bean & Recipe",
+    "deleteWarningTitle": "Delete this bean?",
+    "deleteWarningMessage": "This will remove the bean and its recipe. You can’t undo this action.",
     "save": "Save",
     "update": "Update",
     "saving": "Saving...",

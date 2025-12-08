@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   image: {
+    // Keep in sync with app.json expo-splash-screen imageWidth to avoid visual jump.
     width: 260,
     height: 260,
   },

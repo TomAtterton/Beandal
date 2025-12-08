@@ -2,6 +2,7 @@ import React, { useCallback, useMemo } from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { useRouter } from 'expo-router';
 import { StyleSheet } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { FAB } from '@/components/buttons/FAB';
 import useHydration from '@/hooks/useHydration';
@@ -11,6 +12,7 @@ import { theme } from '@theme';
 
 const Home = () => {
   const router = useRouter();
+  const insets = useSafeAreaInsets();
   const hasHydrated = useHydration();
   const beans = useAppStore((state) => state.beans);
   const recipes = useAppStore((state) => state.recipes);
@@ -32,6 +34,12 @@ const Home = () => {
     [router],
   );
 
+  const handleProfilePress = useCallback(() => {
+    router.push('/settings');
+  }, [router]);
+
+  const listPaddingTop = useMemo(() => insets.top + theme.metrics.spacing.xl * 2, [insets.top]);
+
   return (
     <>
       <RecipeBeanList
@@ -40,6 +48,16 @@ const Home = () => {
         isLoading={isLoading}
         error={null}
         onItemPress={handleItemPress}
+        contentContainerStyle={[styles.listContent, { paddingTop: listPaddingTop }]}
+      />
+
+      <FAB
+        accessibilityLabel="Open settings"
+        iconName="person-circle-outline"
+        onPress={handleProfilePress}
+        tintColor="transparent"
+        iconColor={theme.colors.textPrimary}
+        style={[styles.profileFab, { top: insets.top + theme.metrics.spacing.md }]}
       />
 
       <FAB accessibilityLabel="Add new item" onPress={handleAdd} style={styles.fab} />
@@ -58,8 +76,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.metrics.spacing.xl,
     paddingVertical: theme.metrics.spacing.xl,
   },
+  listContent: {
+    paddingHorizontal: theme.metrics.spacing.xl,
+  },
   content: {
     flex: 1,
+  },
+  profileFab: {
+    position: 'absolute',
+    right: theme.metrics.spacing.xl,
   },
   fab: {
     position: 'absolute',

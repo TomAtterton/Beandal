@@ -23,6 +23,26 @@ const routerLayout = () => (
         headerTransparent: true,
       }}
     />
+    <Stack.Screen
+      name="settings"
+      options={{
+        title: 'Settings',
+        headerBackButtonDisplayMode: 'minimal',
+        headerShadowVisible: false,
+        headerTintColor: theme.colors.textPrimary,
+        headerStyle: { backgroundColor: theme.colors.background },
+      }}
+    />
+    <Stack.Screen
+      name="sync"
+      options={{
+        title: 'Sync',
+        headerBackButtonDisplayMode: 'minimal',
+        headerShadowVisible: false,
+        headerTintColor: theme.colors.textPrimary,
+        headerStyle: { backgroundColor: theme.colors.background },
+      }}
+    />
   </Stack>
 );
 

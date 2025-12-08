@@ -10,12 +10,14 @@ type Props = Omit<React.ComponentProps<typeof BaseButton>, 'children'> & {
   iconName?: React.ComponentProps<typeof Icon>['name'];
   iconSize?: number;
   iconColor?: string;
+  tintColor?: string;
 };
 
 export const FAB = ({
   iconName = 'add',
   iconSize = theme.metrics.iconSize.md,
   iconColor = theme.colors.accentOn,
+  tintColor = theme.colors.accent,
   style,
   ...buttonProps
 }: Props) => {
@@ -24,7 +26,7 @@ export const FAB = ({
       <View style={styles.contentContainer}>
         <GlassView
           style={styles.glass}
-          tintColor={theme.colors.accent}
+          tintColor={tintColor}
           glassEffectStyle={'clear'}
           isInteractive
         >
